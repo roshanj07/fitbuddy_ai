@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FitBuddy - Your Plan
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+<header class="nav">
+
+    <a
+        href="/"
+        class="brand"
+    >
+        FitBuddy
+    </a>
+
+    <a href="/view-all-users">
+        Admin Dashboard
+    </a>
+
+</header>
+
+
+<main class="container">
+
+
+{% if error %}
+
+<div class="alert">
+    {{ error }}
+</div>
+
+{% endif %}
+
+
+{% if message %}
+
+<div class="success">
+    {{ message }}
+</div>
+
+{% endif %}
+
+
+{% if user %}
+
+
+<section class="profile card">
+
+    <div>
+
+        <div class="eyebrow">
+            YOUR PROFILE
+        </div>
+
+        <h1>
+            {{ user.name }}'s Plan
+        </h1>
+
+    </div>
+
+
+    <div class="chips">
+
+        <span>
+            ID {{ user.user_id }}
+        </span>
+
+        <span>
+            {{ user.age }} yrs
+        </span>
+
+        <span>
+            {{ user.weight }} kg
+        </span>
+
+        <span>
+            {{ user.goal }}
+        </span>
+
+        <span>
+            {{ user.intensity|capitalize }}
+        </span>
+
+    </div>
+
+</section>
+
+
+<section class="content-grid">
+
+
+<article class="card plan">
+
+    <h2>
+        7-Day Workout Plan
+    </h2>
+
+    <pre>{{ workout_plan }}</pre>
+
+</article>
+
+
+<aside class="card tip">
+
+    <h2>
+        Nutrition / Recovery Tip
+    </h2>
+
+    <p>
+        {{ nutrition_tip }}
+    </p>
+
+</aside>
+
+
+</section>
+
+
+<section class="card">
+
+    <h2>
+        Refine Your Plan
+    </h2>
+
+    <p class="muted">
+
+        Tell FitBuddy what you want
+        to change.
+
+        Example:
+        "Add more cardio on Day 2
+        and make Day 4 a rest day."
+
+    </p>
+
+
+    <form
+        method="post"
+        action="/submit-feedback"
+    >
+
+        <input
+            type="hidden"
+            name="user_id"
+            value="{{ user.user_id }}"
+        >
+
+
+        <textarea
+            name="feedback"
+            rows="5"
+            placeholder="Enter your feedback..."
+            required
+        ></textarea>
+
+
+        <button
+            class="btn"
+            type="submit"
+        >
+            Update Plan with AI →
+        </button>
+
+    </form>
+
+</section>
+
+{% endif %}
+<!-- Bunny Cheer Overlay -->
+    <div class="cheer-overlay">
+        <div class="bunny-cheer">
+            <img src="/static/img/cheer-bunny.png" alt="Cheering Mascot" class="bunny-icon">
+            <p>YAY! GO, {{ user.name if user and user.name else (name if name else 'CHAMP') }}!</p>
+        </div>
+    </div>
+</main>
+
+</body>
+
+</html>

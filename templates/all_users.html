@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FitBuddy - Admin Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+<header class="nav">
+
+    <a
+        href="/"
+        class="brand"
+    >
+        FitBuddy
+    </a>
+
+    <a href="/">
+        New Plan
+    </a>
+
+</header>
+
+
+<main class="container">
+
+    <div class="eyebrow">
+        ADMIN / COACH VIEW
+    </div>
+
+    <h1>
+        All Users & Plans
+    </h1>
+
+    <p class="muted">
+
+        Review registered profiles
+        and their latest AI-generated
+        workout plans.
+
+    </p>
+
+
+    {% if not rows %}
+
+    <section class="card">
+
+        <p>
+            No users yet.
+            Create a plan from the
+            home page.
+        </p>
+
+    </section>
+
+    {% endif %}
+
+
+    {% for user, plan in rows %}
+
+
+    <section class="card admin-row">
+
+
+        <div class="admin-head">
+
+
+            <div>
+
+                <h2>
+                    {{ user.name }}
+                </h2>
+
+                <p class="muted">
+
+                    {{ user.user_id }}
+
+                    ·
+
+                    {{ user.age }} yrs
+
+                    ·
+
+                    {{ user.weight }} kg
+
+                    ·
+
+                    {{ user.goal }}
+
+                    ·
+
+                    {{ user.intensity }}
+
+                </p>
+
+            </div>
+
+
+            <form
+                method="post"
+                action="/delete-user/{{ user.user_id }}"
+                onsubmit="return confirm('Delete this user and their plan?')"
+            >
+
+                <button
+                    class="danger"
+                    type="submit"
+                >
+                    Delete
+                </button>
+
+            </form>
+
+
+        </div>
+
+
+        <div class="plan-columns">
+
+
+            <div>
+
+                <h3>
+                    Original Plan
+                </h3>
+
+                <pre>
+
+{{ plan.original_plan if plan else "—" }}
+
+                </pre>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Updated Plan
+                </h3>
+
+                <pre>
+
+{{ plan.updated_plan if plan and plan.updated_plan else "No update yet" }}
+
+                </pre>
+
+            </div>
+
+
+        </div>
+
+
+        {% if plan and plan.feedback %}
+
+        <div class="feedback">
+
+            <strong>
+                Latest feedback:
+            </strong>
+
+            {{ plan.feedback }}
+
+        </div>
+
+        {% endif %}
+
+
+    </section>
+
+
+    {% endfor %}
+
+
+</main>
+
+</body>
+
+</html>
